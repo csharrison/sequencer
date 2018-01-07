@@ -26,12 +26,18 @@ class Sequencer {
   void set_scale(Scale scale) {
     current_scale_ = scale;
   }
+
+  SequenceGenerator& sequence_generator() {
+    return sequence_generator_;
+  }
   
  private:
   StepClock note_on_clock_;
   StepClock note_off_clock_;
   SequenceGenerator sequence_generator_;
   Scale current_scale_ = Scale::kChromatic;
+
+  float current_bend_ = 0.0;
   int current_note_ = -1;
   int* pots_;
 };

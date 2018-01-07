@@ -14,10 +14,11 @@ enum class Scale {
 class ScaleGenerator {
  public:
   // |pot_value| will be 0-1023. Return value will be a midi note value (0-127).
-  // TODO(csharrison): Implement the linear scale using pitch bend?
-  static int GetNote(int pot_value, Scale scale);
+  // |pitch_bend| will optionally set if using a linear scale, to a value between -1 and 1.
+  static int GetNote(int pot_value, Scale scale, float* pitch_bend);
  
  private:
+  static int GetLinearNote(int pot_value, float* pitch_bend);
   static int GetChromaticNote(int pot_value);
   static int GetScaleValue(int chromatic_value, int* scale_steps, int scale_length);
 };

@@ -1,11 +1,11 @@
 #include "scale_generator.h"
 
 // static
-int ScaleGenerator::GetNote(int pot_value, Scale scale) {
+int ScaleGenerator::GetNote(int pot_value, Scale scale, float* pitch_bend) {
   int chromatic_value = GetChromaticNote(pot_value);
   switch(scale) {
     case Scale::kLinear:
-      return chromatic_value;
+      return GetLinearNote(pot_value, pitch_bend);
     case Scale::kChromatic:
       return chromatic_value;
     case Scale::kMajor: {
@@ -18,6 +18,15 @@ int ScaleGenerator::GetNote(int pot_value, Scale scale) {
     }
   };
   return 0;
+}
+
+// static
+int ScaleGenerator::GetLinearNote(int pot_value, float* pitch_bend) {
+  // The root will be rounded down due to integer division.
+  int root = pot_value / 16;
+  int remainder = pot_value % 16;
+  *pitch_bend = .5 * ((float) remainder) / 16.0;
+  return root;
 }
 
 // static

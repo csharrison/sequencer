@@ -19,7 +19,7 @@ int y_pots[8];
 ToggleButton x_enabled[8];
 ToggleButton y_enabled[8];
 
-Sequencer x_sequencer(x_enabled, x_pots, 4 /* total_steps */, start_ms, 400);
+Sequencer x_sequencer(x_enabled, x_pots, 1 /* total_steps */, start_ms, 400);
 Sequencer y_sequencer(y_enabled, y_pots, 4 /* total_steps */, start_ms, 400);
 
 void ReadInputs() {
@@ -43,9 +43,11 @@ void WriteLeds(int on_index, int off_index) {
 
 void setup() {
   Sequencer::Begin();
+  x_sequencer.set_scale(Scale::kLinear);
   for (int i = 0; i <= MAX_INPUT_PIN + 8; ++i) {
     pinMode(i, OUTPUT);
   }
+  pinMode(3, INPUT);
 }
 
 void loop() {

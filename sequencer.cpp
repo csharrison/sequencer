@@ -44,11 +44,16 @@ void Sequencer::Tick(unsigned long current_ms, int* on_value, int* step_on, int*
 }
 
 void Sequencer::Play(int step_on_value, int transpose, int length_ms) {
-  int note = transpose + ScaleGenerator::GetNote(step_on_value, current_scale_);
+  float pitch_bend = 0.0;
+  int note = transpose + ScaleGenerator::GetNote(step_on_value, current_scale_, &pitch_bend);
   if (current_note_ != -1) {
     MIDI.sendNoteOff(current_note_, 127, 1);
   }
   current_note_ = note;
+  if (pitch_bend != current_bend_) {
+    current_bend_ = pitch_bend;
+    MIDI.sendPitchBend(pitch_bend, 1);
+  }
   MIDI.sendNoteOn(note, 127, 1);
   note_off_clock_ = StepClock(millis(), length_ms);
 }
