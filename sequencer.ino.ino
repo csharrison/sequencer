@@ -1,25 +1,23 @@
-#include "scale_generator.h"
 #include "sequencer.h"
-#include "sequence_generator.h"
 #include "step_clock.h"
 #include "toggle_button.h"
 
 #define MAX_INPUT_PIN 3
 
-
 // GLOBAL SETTINGS
+unsigned long start_ms = millis();
 
 // Should be less than 64.
 int transpose = 24;
 int duty_length = 400; // ms
 bool function_button = false;
+StepClock poll_clock(start_ms, 5 /* step_interval */);
 
 // SEQUENCE
 int x_pots[8];
 int y_pots[8];
 ToggleButton x_enabled[8];
 ToggleButton y_enabled[8];
-unsigned long start_ms = millis();
 
 Sequencer x_sequencer(x_enabled, x_pots, 4 /* total_steps */, start_ms, 400);
 Sequencer y_sequencer(y_enabled, y_pots, 4 /* total_steps */, start_ms, 400);
@@ -50,19 +48,12 @@ void setup() {
   }
 }
 
-char read_interval = 0;
-Scale current_scale = Scale::kMinor;
-SequenceGenerator sequence_generator(nullptr, MAX_INPUT_PIN + 1);
-StepClock step_clock(millis(), 500);
-int current_note = -1;
-
 void loop() {
-  if (read_interval++ == 0) {
+  unsigned long current_ms = millis();
+  if (poll_clock.Tick(current_ms)) {
     ReadInputs();
-    read_interval = 0;
   }
 
-  unsigned long current_ms = millis();
   int step_on = -1;
   int step_off = -1;
   int on_value = -1;

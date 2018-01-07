@@ -15,7 +15,6 @@ int ScaleGenerator::GetNote(int pot_value, Scale scale) {
     case Scale::kMinor: {
       int scale_steps[7] = {2, 1, 2, 2, 1, 2, 2};
       return GetScaleValue(chromatic_value, scale_steps, 7);
-
     }
   };
   return 0;
