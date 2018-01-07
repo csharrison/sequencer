@@ -3,14 +3,13 @@
 
 class ToggleButton {
  public: 
-  ToggleButton(int pin);
+  ToggleButton();
   ~ToggleButton();
 
-  void ReadPin();
+  void ReadFromPin(int pin);
   bool on() { return on_; }
  private:
-  int pin_;
-  bool on_ = false;
+  bool on_ = true;
   bool currently_pressed_ = false;
 };
 

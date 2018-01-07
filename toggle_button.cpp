@@ -1,14 +1,13 @@
 #include "toggle_button.h"
 
-#include <Arduino.h>
+#include "Arduino.h"
 
-ToggleButton::ToggleButton(int pin):
-  pin_(pin) {}
+ToggleButton::ToggleButton() {}
 
 ToggleButton::~ToggleButton() {}
 
-void ToggleButton::ReadPin() {
-  bool pressed = digitalRead(pin_) == HIGH;
+void ToggleButton::ReadFromPin(int pin) {
+  bool pressed = digitalRead(pin) == HIGH;
   if (pressed && !currently_pressed_) {
     on_ = !on_;
   }

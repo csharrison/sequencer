@@ -8,7 +8,7 @@
 class Sequencer {
  public:
   static void Begin();
-  Sequencer(bool* enabled_steps,
+  Sequencer(ToggleButton* enabled_steps,
             int* pots,
             int total_steps,
             int start_ms,

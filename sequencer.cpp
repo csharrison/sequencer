@@ -1,7 +1,8 @@
-#include <MIDI.h>
-#include <Arduino.h>
+#include "Arduino.h"
+#include "MIDI.h"
 #include "sequencer.h"
 
+// Creates and binds the MIDI interface to the default hardware Serial port
 MIDI_CREATE_DEFAULT_INSTANCE()
 
 // static
@@ -9,7 +10,7 @@ void Sequencer::Begin() {
   MIDI.begin(MIDI_CHANNEL_OMNI);  // Listen to all incoming messages
 }
 
-Sequencer::Sequencer(bool* enabled_steps,
+Sequencer::Sequencer(ToggleButton* enabled_steps,
                      int* pots,
                      int total_steps,
                      int start_ms,
@@ -29,7 +30,7 @@ void Sequencer::Tick(unsigned long current_ms, int* on_value, int* step_on, int*
   if (note_off) {
     MIDI.sendNoteOff(current_note_, 127, 1);
     current_note_ = -1;
-    note_off_clock_.reset();
+    note_off_clock_.Reset();
   }
   if (note_on) {
     *step_on = sequence_generator_.Advance();

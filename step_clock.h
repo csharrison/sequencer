@@ -14,10 +14,8 @@ class StepClock {
     step_interval_ = step_interval;
   }
 
-  void reset() {
-    step_interval_ = -1;
-    current_step_ = 0u;
-  }
+  void Reset();
+  
  private:
   unsigned long previous_ms_;
   unsigned long step_interval_;

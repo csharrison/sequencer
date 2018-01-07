@@ -18,3 +18,9 @@ bool StepClock::Tick(unsigned long current_ms) {
   }
   return false;
 }
+
+void StepClock::Reset() {
+  step_interval_ = -1;
+  current_step_ = 0u;
+}
+

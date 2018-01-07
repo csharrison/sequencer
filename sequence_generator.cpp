@@ -1,8 +1,11 @@
 #include "sequence_generator.h"
-#include "scale_generator.h"
-#include <Arduino.h>
 
-SequenceGenerator::SequenceGenerator(bool* enabled_steps, int total_steps)
+#include "Arduino.h"
+#include "scale_generator.h"
+#include "toggle_button.h"
+
+
+SequenceGenerator::SequenceGenerator(ToggleButton* enabled_steps, int total_steps)
  : enabled_steps_(enabled_steps), total_steps_(total_steps) {}
 
 SequenceGenerator::~SequenceGenerator() {}
@@ -10,7 +13,7 @@ SequenceGenerator::~SequenceGenerator() {}
 int SequenceGenerator::Advance() {
   for (int i = 0; i < total_steps_; i++) {
     int step_index = AdvanceOne();
-    if (enabled_steps_[step_index])
+    if (enabled_steps_[step_index].on())
       return step_index;
     switch (disabled_policy_) {
       case DisabledStepPolicy::kSkip:
@@ -43,13 +46,5 @@ int SequenceGenerator::AdvanceOne() {
 
   current_step_ = next_step;
   return next_step;
-}
-
-void SequenceGenerator::SetOrdering(Ordering ordering) {
-  current_ordering_ = ordering;
-}
-
-void SequenceGenerator::SetDisabledStepPolicy(DisabledStepPolicy disabled_policy) {
-  disabled_policy_ = disabled_policy;
 }
 
